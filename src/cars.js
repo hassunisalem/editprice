@@ -6,7 +6,9 @@ class cars extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      dataSource: null
+      dataSource: null,
+
+      cars: []
     };
   }
 
@@ -16,7 +18,8 @@ class cars extends Component {
       .then(responseJson => {
         this.setState({
           isLoading: false,
-          dataSource: responseJson
+          dataSource: responseJson,
+          price: 2
         });
       })
 
@@ -25,9 +28,22 @@ class cars extends Component {
       });
   }
 
-  changePrice = (amount, val) => {
-    return val + amount;
+  changePrice = () => {
+    this.setState({ count: this.state.dataSource.price + 1 });
   };
+
+  makeCarlist() {
+    let carmodels = this.state.dataSource.map(val => {
+      let car = {
+        id: val.id,
+        brand: val.brand,
+        nummerplate: val.nummerplate,
+        price: val.price
+      };
+
+      return carmodels;
+    });
+  }
 
   render() {
     if (this.state.isLoading) {
@@ -37,26 +53,21 @@ class cars extends Component {
         </div>
       );
     } else {
-      let carmodels = this.state.dataSource.map((val, key) => {
-        return (
-          <react component>
-            let {val.price} = amount
-            <form onSubmit={this.changePrice(amount, "a")}>
-              <li key={key}>
-                {val.nummerplate} <br />
-                {val.brand} <br />
-                <form />
-                let {val.price} = amount <input placeholder="Amount" id="a" />{" "}
-                <button>udate price</button>
-              </li>
-            </form>
-          </react>
-        );
-      });
-
-      return <ul>{carmodels}</ul>;
+      let navn = makeCarlist();
+      return <p>{navn}</p>;
     }
   }
 }
 
 export default cars;
+
+/*
+{ val.price }
+<form onSubmit={() => this.changePrice(this.state.price)}>
+  <li key={val.id}>
+    {val.nummerplate} <br />
+    {val.brand} <br />
+    {val.price} <input placeholder="Amount" id="price" />{" "}
+    <button>udate price</button>
+  </li>
+</form> */
